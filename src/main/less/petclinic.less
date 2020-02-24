@@ -51,8 +51,12 @@
 @table-border-color:                      @spring-brown;
 
 .table > thead > tr > th {
-  background-color: @spring-light-grey;
+  background-color: lighten(@spring-brown, 3%);
   color: @spring-light-grey;
+}
+
+#ownersTable th{
+	background-color: @spring-light-grey;
 }
 
 .table-filter {
