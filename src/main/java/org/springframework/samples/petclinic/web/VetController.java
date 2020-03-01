@@ -66,7 +66,7 @@ public class VetController {
 	}
 	
 	@RequestMapping(value = "/vets/{vetId}/delete")
-	public String deleteOwner(@PathVariable("vetId") int vetId) {
+	public String deleteVet(@PathVariable("vetId") int vetId) {
 		
 			Vet vet = clinicService.findVetById(vetId);		
 			
