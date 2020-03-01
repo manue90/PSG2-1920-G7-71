@@ -23,6 +23,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.model.PetType;
+import org.springframework.samples.petclinic.model.Specialty;
 import org.springframework.samples.petclinic.model.Vet;
 import org.springframework.samples.petclinic.model.Visit;
 import org.springframework.samples.petclinic.repository.OwnerRepository;
@@ -97,6 +98,26 @@ public class ClinicService {
 	@Cacheable(value = "vets")
 	public Collection<Vet> findVets() throws DataAccessException {
 		return vetRepository.findAll();
+	}
+	
+	/*Encontrar vet por su Id*/
+	@Transactional(readOnly = true)
+	public Vet findVetById(int id) throws DataAccessException {
+		return vetRepository.findById(id);
+	}
+	
+	/*Guardar vet*/
+	@Transactional
+	public void saveVet(Vet vet) throws DataAccessException {
+		vetRepository.save(vet);
+	}
+	
+	/*Añadir Especialidad*/
+	public void addSpecialty(int id, Specialty s) throws DataAccessException
+	{
+		Vet vet = this.vetRepository.findById(id);
+		vet.getSpecialties().add(s);
+		this.vetRepository.save(vet);
 	}
 
 	public Collection<Visit> findVisitsByPetId(int petId) {

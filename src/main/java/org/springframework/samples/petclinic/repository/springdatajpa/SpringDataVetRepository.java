@@ -15,7 +15,9 @@
  */
 package org.springframework.samples.petclinic.repository.springdatajpa;
 
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.Repository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.samples.petclinic.model.Vet;
 import org.springframework.samples.petclinic.repository.VetRepository;
 
@@ -27,4 +29,8 @@ import org.springframework.samples.petclinic.repository.VetRepository;
  */
 public interface SpringDataVetRepository extends VetRepository, Repository<Vet, Integer> {
 
+	@Override
+	@Query("SELECT vet FROM Vet vet WHERE vet.id =:id")
+	public Vet findById(@Param("id") int id);
+	
 }

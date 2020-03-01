@@ -39,4 +39,10 @@ public interface VetRepository {
 	 */
 	Collection<Vet> findAll() throws DataAccessException;
 
+	/*Obtener un veterinario a través de su Id*/
+	Vet findById(int id) throws DataAccessException;
+	
+	/*Guardar un veterinario actualizado o creado*/
+	void save(Vet vet) throws DataAccessException;
+	
 }
