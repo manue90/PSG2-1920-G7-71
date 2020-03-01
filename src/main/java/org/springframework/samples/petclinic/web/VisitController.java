@@ -88,5 +88,15 @@ public class VisitController {
 		model.put("visits", this.clinicService.findPetById(petId).getVisits());
 		return "visitList";
 	}
+	
+	@RequestMapping(value = "/owners/{ownerId}/pets/{petId}/visits/{visitId}/delete")
+	public String deleteVisit(@PathVariable("visitId") int visitId) {
+		
+			Visit visit = clinicService.findVisitById(visitId);		
+			
+			this.clinicService.deleteVisit(visit);
+			
+			return "redirect:/owners/{ownerId}";
+		}
 
 }

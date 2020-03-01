@@ -15,7 +15,9 @@
  */
 package org.springframework.samples.petclinic.repository.springdatajpa;
 
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.Repository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.samples.petclinic.model.Visit;
 import org.springframework.samples.petclinic.repository.VisitRepository;
 
@@ -27,4 +29,6 @@ import org.springframework.samples.petclinic.repository.VisitRepository;
  */
 public interface SpringDataVisitRepository extends VisitRepository, Repository<Visit, Integer> {
 
+	@Query("SELECT visit FROM Visit visit WHERE visit.id =:id")
+	public Visit findById(@Param("id") int id);
 }

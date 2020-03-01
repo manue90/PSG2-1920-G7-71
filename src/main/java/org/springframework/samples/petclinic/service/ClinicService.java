@@ -123,5 +123,13 @@ public class ClinicService {
 		return vetRepository.findById(id);
 	}
 	
+	@Transactional
+	public void deleteVisit(Visit visit) throws DataAccessException {
+		visitRepository.delete(visit);
+	}
 	
+	@Transactional(readOnly = true)
+	public Visit findVisitById(int id) throws DataAccessException {
+		return visitRepository.findById(id);
+	}
 }
