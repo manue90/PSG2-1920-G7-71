@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,7 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.springframework.samples.petclinic.web;
+
+import java.util.Map;
+
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.model.Vet;
@@ -28,10 +33,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.Map;
-
-import javax.validation.Valid;
-
 /**
  * @author Juergen Hoeller
  * @author Mark Fisher
@@ -41,16 +42,21 @@ import javax.validation.Valid;
 @Controller
 public class VetController {
 
-	private static final String VIEWS_VET_CREATE_OR_UPDATE_FORM = "vets/createOrUpdateVetForm";
-	private final ClinicService clinicService;
+	private static final String	VIEWS_VET_CREATE_OR_UPDATE_FORM	= "vets/createOrUpdateVetForm";
+	private final ClinicService	clinicService;
+
 
 	@Autowired
-	public VetController(ClinicService clinicService) {
+	public VetController(final ClinicService clinicService) {
 		this.clinicService = clinicService;
 	}
 
-	@GetMapping(value = { "/vets" })
-	public String showVetList(Map<String, Object> model) {
+	//Lista Veterinarios
+
+	@GetMapping(value = {
+		"/vets"
+	})
+	public String showVetList(final Map<String, Object> model) {
 		// Here we are returning an object of type 'Vets' rather than a collection of Vet
 		// objects
 		// so it is simpler for Object-Xml mapping
@@ -60,34 +66,9 @@ public class VetController {
 		return "vets/vetList";
 	}
 
-	@GetMapping("/vets/{vetId}")
-	public ModelAndView showVet(@PathVariable("vetId") int vetId) {
-		ModelAndView mav = new ModelAndView("vets/vetDetails");
-		mav.addObject(this.clinicService.findVetById(vetId));
-		return mav;
-	}
-
-	@GetMapping(value = "/vets/{vetId}/edit")
-	public String initUpdateVetForm(@PathVariable("vetId") int vetId, Model model) {
-		Vet vet = this.clinicService.findVetById(vetId);
-		model.addAttribute(vet);
-		return VIEWS_VET_CREATE_OR_UPDATE_FORM;
-	}
-
-	@PostMapping(value = "/vets/{vetId}/edit")
-	public String processUpdateVetForm(@Valid Vet vet, BindingResult result,
-			@PathVariable("vetId") int vetId) {
-		if (result.hasErrors()) {
-			return VIEWS_VET_CREATE_OR_UPDATE_FORM;
-		}
-		else {
-			vet.setId(vetId);
-			this.clinicService.saveVet(vet);
-			return "redirect:/vets/{vetId}";
-		}
-	}
-		
-	@GetMapping(value = { "/vets.xml"})
+	@GetMapping(value = {
+		"/vets.xml"
+	})
 	public @ResponseBody Vets showResourcesVetList() {
 		// Here we are returning an object of type 'Vets' rather than a collection of Vet
 		// objects
@@ -95,6 +76,58 @@ public class VetController {
 		Vets vets = new Vets();
 		vets.getVetList().addAll(this.clinicService.findVets());
 		return vets;
+	}
+
+	//Vista Veterinario
+
+	@GetMapping("/vets/{vetId}")
+	public ModelAndView showVet(@PathVariable("vetId") final int vetId) {
+		ModelAndView mav = new ModelAndView("vets/vetDetails");
+		mav.addObject(this.clinicService.findVetById(vetId));
+		return mav;
+	}
+
+	//Editar Veterinario
+
+	@GetMapping(value = "/vets/{vetId}/edit")
+	public String initUpdateVetForm(@PathVariable("vetId") final int vetId, final Model model) {
+		Vet vet = this.clinicService.findVetById(vetId);
+		model.addAttribute(vet);
+		return VetController.VIEWS_VET_CREATE_OR_UPDATE_FORM;
+	}
+
+	@PostMapping(value = "/vets/{vetId}/edit")
+	public String processUpdateVetForm(@Valid final Vet vet, final BindingResult result, @PathVariable("vetId") final int vetId) {
+		if (result.hasErrors()) {
+			return VetController.VIEWS_VET_CREATE_OR_UPDATE_FORM;
+		} else {
+			vet.setId(vetId);
+			this.clinicService.saveVet(vet);
+			return "redirect:/vets/{vetId}";
+		}
+	}
+
+	//Crear Veterinario
+
+	@GetMapping(value = "/vets/new")
+	public String initCreationForm(final Map<String, Object> model) {
+
+		Vet vet = new Vet();
+		model.put("vet", vet);
+
+		return VetController.VIEWS_VET_CREATE_OR_UPDATE_FORM;
+	}
+
+	@PostMapping(value = "/vets/new")
+	public String processCreationForm(@Valid final Vet vet, final BindingResult result) {
+		if (result.hasErrors()) {
+			return VetController.VIEWS_VET_CREATE_OR_UPDATE_FORM;
+		} else {
+
+			this.clinicService.saveVet(vet);
+
+			return "redirect:/vets/" + vet.getId();
+		}
 	}
 
 }

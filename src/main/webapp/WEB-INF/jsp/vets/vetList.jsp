@@ -37,6 +37,12 @@
 
     <table class="table-buttons">
         <tr>
+        	<td>
+             	<spring:url value="vets/new" var="newUrl"></spring:url>
+    			<a href="${fn:escapeXml(newUrl)}" class="btn btn-default">Create a new Vet</a>
+            </td>  
+        </tr>
+        <tr>
             <td>
                 <a href="<spring:url value="/vets.xml" htmlEscape="true" />">View as XML</a>
             </td>            
