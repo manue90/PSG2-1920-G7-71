@@ -40,7 +40,7 @@
     </spring:url>
     <a href="${fn:escapeXml(editUrl)}" class="btn btn-default">Edit Vet</a>
     
-    <spring:url value="{vetId}/specialties/new" var="addUrl">
+    <spring:url value="{vetId}/specialty/new" var="addUrl">
         <spring:param name="vetId" value="${vet.id}"/>
     </spring:url>
     <a href="${fn:escapeXml(addUrl)}" class="btn btn-default">Add New Specialty</a>

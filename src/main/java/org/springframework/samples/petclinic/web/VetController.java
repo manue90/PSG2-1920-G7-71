@@ -21,6 +21,7 @@ import java.util.Map;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.petclinic.model.Specialty;
 import org.springframework.samples.petclinic.model.Vet;
 import org.springframework.samples.petclinic.model.Vets;
 import org.springframework.samples.petclinic.service.ClinicService;
@@ -42,7 +43,8 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class VetController {
 
-	private static final String	VIEWS_VET_CREATE_OR_UPDATE_FORM	= "vets/createOrUpdateVetForm";
+	private static final String	VIEWS_VET_CREATE_OR_UPDATE_FORM			= "vets/createOrUpdateVetForm";
+	private static final String	VIEWS_SPECIALTY_CREATE_OR_UPDATE_FORM	= "specialties/createOrUpdateSpecialtyForm";
 	private final ClinicService	clinicService;
 
 
@@ -127,6 +129,31 @@ public class VetController {
 			this.clinicService.saveVet(vet);
 
 			return "redirect:/vets/" + vet.getId();
+		}
+	}
+
+	//Crear Specialty
+
+	@GetMapping(value = "/vets/{vetId}/specialty/new")
+	public String addSpecialty(final Map<String, Object> model) {
+
+		Specialty s = new Specialty();
+		model.put("specialty", s);
+
+		return VetController.VIEWS_SPECIALTY_CREATE_OR_UPDATE_FORM;
+	}
+
+	@PostMapping(value = "/vets/{vetId}/specialty/new")
+	public String addSpecialty(@Valid final Specialty specialty, @PathVariable("vetId") final int vetId, final BindingResult result) {
+		if (result.hasErrors()) {
+			return VetController.VIEWS_SPECIALTY_CREATE_OR_UPDATE_FORM;
+		} else {
+
+			Vet vet = this.clinicService.findVetById(vetId);
+			vet.addSpecialty(specialty);
+			this.clinicService.saveSpecialty(specialty);
+
+			return "redirect:/vets/";
 		}
 	}
 
