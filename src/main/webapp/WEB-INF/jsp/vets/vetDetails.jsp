@@ -30,7 +30,23 @@
                         <dd><c:out value="${specialties.name}"/></dd>
                     </dl>
                 </td>
+                
+                <td valign="top">
+                    <table class="table-condensed">
+                    	<tr>
+                    		<td>
+                    			<spring:url value="/vets/{vetId}/specialty/{specialtyId}/edit" var="specialtyUrl">
+                                    <spring:param name="vetId" value="${vet.id}"/>
+                                    <spring:param name="specialtyId" value="${specialties.id}"/>
+                                </spring:url>
+                                <a href="${fn:escapeXml(specialtyUrl)}">Edit Specialty</a>
+                    		</td>
+                    	</tr>
+                   	</table>
+                </td>
             </tr>
+            
+            
             
          </c:forEach>
       </table>

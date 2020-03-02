@@ -17,6 +17,7 @@
 package org.springframework.samples.petclinic.service;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
@@ -114,10 +115,10 @@ public class ClinicService {
 	}
 
 	/* Añadir Especialidad */
-	public void addSpecialty(final int id, final Specialty s) throws DataAccessException {
-		Vet vet = this.vetRepository.findById(id);
-		vet.getSpecialties().add(s);
-		this.vetRepository.save(vet);
+	@Transactional(readOnly = true)
+	public Collection<Specialty> findSpecTypes() throws DataAccessException
+	{
+		return this.vetRepository.findSpecTypes();
 	}
 
 	public Collection<Visit> findVisitsByPetId(final int petId) {
@@ -131,7 +132,15 @@ public class ClinicService {
 
 	public void saveSpecialty(final Specialty a) {
 		this.vetRepository.save(a);
-
 	}
-
+		
+	public List<Specialty> findAllSpec()
+	{
+		return this.vetRepository.findAllSpec();
+	}
+	
+	public Specialty findSpecById(int id)
+	{
+		return this.vetRepository.findSpecById(id);
+	}
 }
