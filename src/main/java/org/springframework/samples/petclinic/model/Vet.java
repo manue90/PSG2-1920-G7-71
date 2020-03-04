@@ -21,11 +21,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlElement;
 
@@ -73,6 +75,20 @@ public class Vet extends Person {
 
 	public void addSpecialty(Specialty specialty) {
 		getSpecialtiesInternal().add(specialty);
+	}
+	
+	public Specialty getSpecialty(String name, boolean ignoreNew) {
+		name = name.toLowerCase();
+		for (Specialty spec : getSpecialtiesInternal()) {
+			if (!ignoreNew || !spec.isNew()) {
+				String compName = spec.getName();
+				compName = compName.toLowerCase();
+				if (compName.equals(name)) {
+					return spec;
+				}
+			}
+		}
+		return null;
 	}
 
 }
