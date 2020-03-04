@@ -15,11 +15,12 @@
  */
 package org.springframework.samples.petclinic.repository;
 
+import java.util.List;
+
 import org.springframework.dao.DataAccessException;
 import org.springframework.samples.petclinic.model.BaseEntity;
 import org.springframework.samples.petclinic.model.RoomBook;
 
-import antlr.collections.List;
 
 /**
  * Repository class for <code>Visit</code> domain objects All method names are compliant
@@ -40,6 +41,6 @@ public interface RoomBookRepository {
 	 */
 	void save(RoomBook roomBook) throws DataAccessException;
 
-	List<RoomBook> findByPetId(Integer petId);
+	List<RoomBook> findByPetId(Integer petId) throws DataAccessException;
 
 }
