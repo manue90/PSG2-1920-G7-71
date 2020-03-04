@@ -20,7 +20,7 @@ import java.time.LocalDate;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -44,12 +44,9 @@ public class RoomBook extends NamedEntity {
 	private LocalDate finishDate;
 	
 	@JoinColumn(name = "pet_id")
-	@OneToOne()
+	@ManyToOne
 	private Pet pet;
 	
-	@JoinColumn(name = "owner_id")
-	@OneToOne()
-	private Owner owner;
 
 	public LocalDate getStartDate() {
 		return startDate;
@@ -75,17 +72,10 @@ public class RoomBook extends NamedEntity {
 		this.pet = pet;
 	}
 
-	public Owner getOwner() {
-		return owner;
-	}
-
-	public void setOwner(Owner owner) {
-		this.owner = owner;
-	}
 
 	@Override
 	public String toString() {
-		return "RoomBook [startDate=" + startDate + ", finishDate=" + finishDate + ", pet=" + pet + ", owner=" + owner
+		return "RoomBook [startDate=" + startDate + ", finishDate=" + finishDate + ", pet=" + pet 
 				+ "]";
 	}
 	

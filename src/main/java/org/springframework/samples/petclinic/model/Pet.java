@@ -15,9 +15,12 @@
  */
 package org.springframework.samples.petclinic.model;
 
-import org.springframework.beans.support.MutableSortDefinition;
-import org.springframework.beans.support.PropertyComparator;
-import org.springframework.format.annotation.DateTimeFormat;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -28,12 +31,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import org.springframework.beans.support.MutableSortDefinition;
+import org.springframework.beans.support.PropertyComparator;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * Simple business object representing a pet.
@@ -60,6 +60,9 @@ public class Pet extends NamedEntity {
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "pet", fetch = FetchType.EAGER)
 	private Set<Visit> visits;
+	
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "pet", fetch = FetchType.EAGER)
+	private Set<RoomBook> roomBook;
 
 	public void setBirthDate(LocalDate birthDate) {
 		this.birthDate = birthDate;
@@ -91,9 +94,22 @@ public class Pet extends NamedEntity {
 		}
 		return this.visits;
 	}
+	
 
 	protected void setVisitsInternal(Set<Visit> visits) {
 		this.visits = visits;
+	}
+
+	protected Set<RoomBook> getRoomBooksInternal() {
+		if (this.roomBook == null) {
+			this.roomBook = new HashSet<>();
+		}
+		return this.roomBook;
+	}
+
+
+	protected void setRoomBooksInternal(Set<RoomBook> roomBooks) {
+		this.roomBook = roomBooks;
 	}
 
 	public List<Visit> getVisits() {
@@ -106,5 +122,17 @@ public class Pet extends NamedEntity {
 		getVisitsInternal().add(visit);
 		visit.setPet(this);
 	}
+	
+	public List<RoomBook> getRoomBooks() {
+		List<RoomBook> sortedRoomBooks = new ArrayList<>(getRoomBooksInternal());
+		PropertyComparator.sort(sortedRoomBooks, new MutableSortDefinition("date", false, false));
+		return Collections.unmodifiableList(sortedRoomBooks);
+	}
+
+	public void addRoomBook(RoomBook roomBook) {
+		getRoomBooksInternal().add(roomBook);
+		roomBook.setPet(this);
+	}
+
 
 }

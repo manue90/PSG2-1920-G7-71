@@ -73,10 +73,10 @@ public class RoomBookService {
 		roomBookRepository.save(roomBook);
 	}
 
-//	@Transactional(readOnly = true)
-//	public Pet findPetById(int id) throws DataAccessException {
-//		return petRepository.findById(id);
-//	}
+	@Transactional(readOnly = true)
+	public Pet findPetById(int id) throws DataAccessException {
+		return petRepository.findById(id);
+	}
 
 	@Transactional
 	public void savePet(Pet pet) throws DataAccessException {
@@ -84,9 +84,9 @@ public class RoomBookService {
 	}
 
 
-//	public Collection<RoomBook> findVisitsByPetId(int petId) {
-//		return roomBookRepository.findByPetId(petId);
-//	}
-//	
+	public Collection<RoomBook> findVisitsByPetId(int petId) {
+		return roomBookRepository.findByPetId(petId);
+	}
+	
 
 }
