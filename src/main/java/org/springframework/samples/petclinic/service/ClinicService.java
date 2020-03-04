@@ -100,7 +100,7 @@ public class ClinicService {
 	}
 
 	public Collection<Visit> findVisitsByPetId(int petId) {
-		return visitRepository.findByPetId(petId);
+		return visitRepository.findVisitsByPetId(petId);
 	}
 	
 	@Transactional

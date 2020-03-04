@@ -20,6 +20,7 @@ import java.util.Map;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.model.Visit;
 import org.springframework.samples.petclinic.service.ClinicService;
@@ -90,13 +91,16 @@ public class VisitController {
 	}
 	
 	@RequestMapping(value = "/owners/{ownerId}/pets/{petId}/visits/{visitId}/delete")
-	public String deleteVisit(@PathVariable("visitId") int visitId) {
-		
-			Visit visit = clinicService.findVisitById(visitId);		
+	public String deleteVisit(@PathVariable("ownerId") int ownerId, @PathVariable("visitId") int visitId, @PathVariable("petId") int petId) {
+							
+			Visit visit = clinicService.findVisitById(visitId);
+			Pet pet = clinicService.findPetById(petId);
 			
-			this.clinicService.deleteVisit(visit);
+			pet.removeVisit(visit);
+			
+			
+			this.clinicService.deleteVisit(visit); //FALLO AQUI
 			
 			return "redirect:/owners/{ownerId}";
 		}
-
 }
